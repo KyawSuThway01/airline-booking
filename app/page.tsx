@@ -1,65 +1,182 @@
-import Image from "next/image";
+'use client';
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
 
 export default function Home() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => { });
+    }
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="bg-black min-h-screen">
+
+      {/* Hero Section with Video */}
+      <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
+
+        {/* Background Video */}
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80" />
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+          <p className="text-sky-400 text-sm font-semibold tracking-[0.3em] uppercase mb-6">
+            Welcome to
           </p>
+          <h1 className="text-7xl md:text-9xl font-bold text-white mb-6 tracking-tight">
+            DairyFlat<span className="text-sky-400">Air</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 mb-4 font-light">
+            Private jet travel from Dairy Flat Airport
+          </p>
+          <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+            Experience luxury point-to-point flights across New Zealand and beyond.
+            Small aircraft. Big skies. Unforgettable journeys.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/search"
+              className="bg-sky-500 hover:bg-sky-400 text-white font-bold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:scale-105">
+              Search Flights
+            </Link>
+            <Link href="/my-bookings"
+              className="border border-white/40 hover:border-white text-white font-semibold px-10 py-4 rounded-full text-lg transition-all duration-300 hover:bg-white/10 backdrop-blur">
+              My Bookings
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
+          <p className="text-white/50 text-xs tracking-widest uppercase">Scroll</p>
+          <svg className="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
+          </svg>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Stats Bar */}
+      <section className="bg-sky-500 py-6">
+        <div className="max-w-5xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {[
+            { value: '5', label: 'Destinations' },
+            { value: '6', label: 'Flights Weekly' },
+            { value: '3', label: 'Aircraft Types' },
+            { value: '100%', label: 'Private' },
+          ].map(stat => (
+            <div key={stat.label}>
+              <p className="text-3xl font-bold text-white">{stat.value}</p>
+              <p className="text-sky-100 text-sm mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Routes Section */}
+      <section className="bg-gray-950 py-24 px-6">
+        <div className="max-w-6xl mx-auto">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: '🌏', dest: 'Sydney', code: 'YSSY',
+                freq: 'Weekly — Fridays', price: 'From $1,200',
+                aircraft: 'SyberJet SJ30i', seats: '6 seats',
+                desc: 'Our prestige transtasman service in ultimate luxury.',
+                color: 'from-blue-900/50 to-blue-950/50',
+                border: 'border-blue-800/30',
+              },
+              {
+                icon: '🌋', dest: 'Rotorua', code: 'NZRO',
+                freq: 'Twice daily — Mon to Fri', price: 'From $180',
+                aircraft: 'Cirrus SF50', seats: '4 seats',
+                desc: 'Fast daily shuttle to the geothermal capital.',
+                color: 'from-orange-900/40 to-gray-950/50',
+                border: 'border-orange-800/30',
+              },
+              {
+                icon: '🏝️', dest: 'Great Barrier Island', code: 'NZGB',
+                freq: '3× weekly', price: 'From $220',
+                aircraft: 'Cirrus SF50', seats: '4 seats',
+                desc: 'Escape to Claris — unspoiled and breathtaking.',
+                color: 'from-teal-900/40 to-gray-950/50',
+                border: 'border-teal-800/30',
+              },
+              {
+                icon: '🌊', dest: 'Chatham Islands', code: 'NZCI',
+                freq: 'Twice weekly', price: 'From $650',
+                aircraft: 'HondaJet Elite', seats: '5 seats',
+                desc: 'Remote and remarkable — the edge of the world.',
+                color: 'from-indigo-900/40 to-gray-950/50',
+                border: 'border-indigo-800/30',
+              },
+              {
+                icon: '🏔️', dest: 'Lake Tekapo', code: 'NZTL',
+                freq: 'Weekly — Mondays', price: 'From $350',
+                aircraft: 'HondaJet Elite', seats: '5 seats',
+                desc: 'Soar over the Southern Alps to stargazer country.',
+                color: 'from-purple-900/40 to-gray-950/50',
+                border: 'border-purple-800/30',
+              },
+            ].map((route) => (
+              <div key={route.dest}
+                className={`rounded-2xl bg-gradient-to-br ${route.color} border ${route.border} p-6 hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}
+                onClick={() => window.location.href = `/search?orig=NZNE&dest=${route.code}`}>
+                <div className="text-4xl mb-4">{route.icon}</div>
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="text-xl font-bold text-white">{route.dest}</h3>
+                    <p className="text-gray-500 text-xs">{route.code}</p>
+                  </div>
+                  <span className="text-sky-400 font-bold text-sm">{route.price}</span>
+                </div>
+                <p className="text-gray-400 text-sm mb-4">{route.desc}</p>
+                <div className="border-t border-white/10 pt-4 flex justify-between text-xs text-gray-500">
+                  <span>✈ {route.aircraft}</span>
+                  <span>{route.seats}</span>
+                </div>
+                <p className="text-gray-600 text-xs mt-2">{route.freq}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-sky-600 py-24 px-6 text-center">
+        <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          Ready to take off?
+        </h2>
+        <p className="text-sky-100 text-lg mb-10 max-w-xl mx-auto">
+          Search available flights and book your seat in minutes.
+        </p>
+        <Link href="/search"
+          className="bg-white text-sky-700 font-bold px-12 py-4 rounded-full text-lg hover:bg-sky-50 transition-all duration-300 hover:scale-105 inline-block">
+          Search Flights Now
+        </Link>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black py-10 px-6 text-center">
+        <p className="text-white font-bold text-xl mb-1">✈ DairyFlat Air</p>
+        <p className="text-gray-600 text-sm">Dairy Flat Airport (NZNE) · North of Albany · New Zealand</p>
+        <p className="text-gray-700 text-xs mt-4">© 2026 DairyFlat Air. All rights reserved.</p>
+      </footer>
+
+    </main>
   );
 }
