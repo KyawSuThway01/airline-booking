@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const uri = 'mongodb://localhost:27017/airline-booking';
+const uri = 'mongodb+srv://admin:mypass123@cluster0.zhtv6f6.mongodb.net/airline-booking?retryWrites=true&w=majority&appName=Cluster0';
 
 const airports: Record<string, { name: string; timezone: string }> = {
     NZNE: { name: 'Dairy Flat', timezone: 'Pacific/Auckland' },
