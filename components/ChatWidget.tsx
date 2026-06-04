@@ -67,8 +67,8 @@ export default function ChatWidget() {
                                     <div className="w-7 h-7 rounded-full bg-sky-600 flex items-center justify-center text-xs mr-2 shrink-0 mt-1">✈</div>
                                 )}
                                 <div className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${msg.role === 'user'
-                                        ? 'bg-sky-500 text-white rounded-tr-sm'
-                                        : 'bg-gray-800 text-gray-200 rounded-tl-sm'
+                                    ? 'bg-sky-500 text-white rounded-tr-sm'
+                                    : 'bg-gray-800 text-gray-200 rounded-tl-sm'
                                     }`}>
                                     {msg.content}
                                 </div>
@@ -116,6 +116,14 @@ export default function ChatWidget() {
             )}
 
             {/* Floating button */}
+            {/* Pulse ring animation */}
+            {!open && (
+                <>
+                    <span className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-sky-400 opacity-75 z-40 animate-ping" />
+                    <span className="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-sky-300 opacity-40 z-40 animate-ping" style={{ animationDelay: '0.5s' }} />
+                </>
+            )}
+
             <button
                 onClick={() => setOpen(!open)}
                 className="fixed bottom-6 right-6 w-14 h-14 bg-sky-500 hover:bg-sky-400 text-white rounded-full shadow-lg flex items-center justify-center text-2xl transition-all duration-300 hover:scale-110 z-50">

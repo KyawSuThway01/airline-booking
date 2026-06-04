@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
+
+const RouteMap = dynamic(() => import('@/components/RouteMap'), { ssr: false });
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -133,9 +136,10 @@ export default function Home() {
                 border: 'border-purple-800/30',
               },
             ].map((route) => (
-              <div key={route.dest}
-                className={`rounded-2xl bg-gradient-to-br ${route.color} border ${route.border} p-6 hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}
-                onClick={() => window.location.href = `/search?orig=NZNE&dest=${route.code}`}>
+              <Link
+                href={`/search?orig=NZNE&dest=${route.code}`}
+                key={route.dest}
+                className={`rounded-2xl bg-gradient-to-br ${route.color} border ${route.border} p-6 hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}>
                 <div className="text-4xl mb-4">{route.icon}</div>
                 <div className="flex items-start justify-between mb-3">
                   <div>
@@ -150,9 +154,21 @@ export default function Home() {
                   <span>{route.seats}</span>
                 </div>
                 <p className="text-gray-600 text-xs mt-2">{route.freq}</p>
-              </div>
+              </Link>
             ))}
           </div>
+
+          {/* Route Map */}
+          <div className="mt-16">
+            <p className="text-sky-400 text-sm font-semibold tracking-[0.3em] uppercase text-center mb-3">
+              Flight Network
+            </p>
+            <h3 className="text-3xl font-bold text-white text-center mb-8">
+              Our Route Map
+            </h3>
+            <RouteMap />
+          </div>
+
         </div>
       </section>
 
