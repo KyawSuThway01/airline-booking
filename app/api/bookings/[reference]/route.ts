@@ -32,7 +32,7 @@ export async function DELETE(
 
     const result = await db.collection('schedules').updateOne(
         { 'bookings.bookingReference': reference },
-        { $pull: { bookings: { bookingReference: reference } } } as any
+        { $pull: { bookings: { bookingReference: reference } } as any }
     );
 
     if (result.modifiedCount === 0) {
