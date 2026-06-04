@@ -30,9 +30,12 @@ export async function DELETE(
     const client = await clientPromise;
     const db = client.db('airline-booking');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const update = { $pull: { bookings: { bookingReference: reference } } } as any;
+
     const result = await db.collection('schedules').updateOne(
         { 'bookings.bookingReference': reference },
-        { $pull: { bookings: { bookingReference: reference } } as any }
+        update
     );
 
     if (result.modifiedCount === 0) {
