@@ -100,60 +100,65 @@ export default function Home() {
                 freq: 'Weekly — Fridays', price: 'From $1,200',
                 aircraft: 'SyberJet SJ30i', seats: '6 seats',
                 desc: 'Our prestige transtasman service in ultimate luxury.',
-                color: 'from-blue-900/50 to-blue-950/50',
-                border: 'border-blue-800/30',
+                image: '/sydney.jpg',
               },
               {
                 icon: '🌋', dest: 'Rotorua', code: 'NZRO',
                 freq: 'Twice daily — Mon to Fri', price: 'From $180',
                 aircraft: 'Cirrus SF50', seats: '4 seats',
                 desc: 'Fast daily shuttle to the geothermal capital.',
-                color: 'from-orange-900/40 to-gray-950/50',
-                border: 'border-orange-800/30',
+                image: '/rotorua.jpg',
               },
               {
                 icon: '🏝️', dest: 'Great Barrier Island', code: 'NZGB',
                 freq: '3× weekly', price: 'From $220',
                 aircraft: 'Cirrus SF50', seats: '4 seats',
                 desc: 'Escape to Claris — unspoiled and breathtaking.',
-                color: 'from-teal-900/40 to-gray-950/50',
-                border: 'border-teal-800/30',
+                image: '/great-barrier.jpg',
               },
               {
                 icon: '🌊', dest: 'Chatham Islands', code: 'NZCI',
                 freq: 'Twice weekly', price: 'From $650',
                 aircraft: 'HondaJet Elite', seats: '5 seats',
                 desc: 'Remote and remarkable — the edge of the world.',
-                color: 'from-indigo-900/40 to-gray-950/50',
-                border: 'border-indigo-800/30',
+                image: '/chatham.jpg',
               },
               {
                 icon: '🏔️', dest: 'Lake Tekapo', code: 'NZTL',
                 freq: 'Weekly — Mondays', price: 'From $350',
                 aircraft: 'HondaJet Elite', seats: '5 seats',
                 desc: 'Soar over the Southern Alps to stargazer country.',
-                color: 'from-purple-900/40 to-gray-950/50',
-                border: 'border-purple-800/30',
+                image: '/tekapo.jpg',
               },
             ].map((route) => (
               <Link
                 href={`/search?orig=NZNE&dest=${route.code}`}
                 key={route.dest}
-                className={`rounded-2xl bg-gradient-to-br ${route.color} border ${route.border} p-6 hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}>
-                <div className="text-4xl mb-4">{route.icon}</div>
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="text-xl font-bold text-white">{route.dest}</h3>
-                    <p className="text-gray-500 text-xs">{route.code}</p>
+                className="relative rounded-2xl overflow-hidden group cursor-pointer h-64 block">
+                {/* Background image */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                  style={{ backgroundImage: `url(${route.image})` }}
+                />
+                {/* Dark overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:from-black/80 transition-all duration-300" />
+                {/* Content */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-between">
+                  <div className="flex justify-between items-start">
+                    <span className="text-3xl">{route.icon}</span>
+                    <span className="bg-sky-500/80 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full">
+                      {route.price}
+                    </span>
                   </div>
-                  <span className="text-sky-400 font-bold text-sm">{route.price}</span>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-1">{route.dest}</h3>
+                    <p className="text-gray-300 text-xs mb-3">{route.desc}</p>
+                    <div className="flex justify-between text-xs text-gray-400">
+                      <span>✈ {route.aircraft}</span>
+                      <span>{route.freq}</span>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-gray-400 text-sm mb-4">{route.desc}</p>
-                <div className="border-t border-white/10 pt-4 flex justify-between text-xs text-gray-500">
-                  <span>✈ {route.aircraft}</span>
-                  <span>{route.seats}</span>
-                </div>
-                <p className="text-gray-600 text-xs mt-2">{route.freq}</p>
               </Link>
             ))}
           </div>
@@ -163,9 +168,7 @@ export default function Home() {
             <p className="text-sky-400 text-sm font-semibold tracking-[0.3em] uppercase text-center mb-3">
               Flight Network
             </p>
-            <h3 className="text-3xl font-bold text-white text-center mb-8">
-              Our Route Map
-            </h3>
+
             <RouteMap />
           </div>
 
