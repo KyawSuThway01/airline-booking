@@ -6,7 +6,7 @@ A premium online flight booking system for a fictitious airline operating out of
 
 ## 🌐 Live Demo
 
-> Deployed on Vercel: _coming soon_
+> Deployed on Vercel: https://airline-booking-indol.vercel.app/
 
 ---
 
