@@ -29,18 +29,11 @@ export async function POST(request: NextRequest) {
 
     const bookingReference = generateReference();
 
+    const pushUpdate: any = { $push: { bookings: { bookingReference, passengerName, passengerEmail, bookedAt: new Date() } } };
+
     await db.collection('schedules').updateOne(
         { _id: new ObjectId(scheduleId) },
-        {
-            $push: {
-                bookings: {
-                    bookingReference,
-                    passengerName,
-                    passengerEmail,
-                    bookedAt: new Date(),
-                },
-            },
-        }
+        pushUpdate
     );
 
     const updatedSchedule = await db.collection('schedules').findOne({ _id: new ObjectId(scheduleId) });
