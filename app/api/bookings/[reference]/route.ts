@@ -1,46 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: Promise<{ reference: string }> }
-) {
-    const { reference } = await params;
-
-    const client = await clientPromise;
-    const db = client.db('airline-booking');
-
-    const schedules = await db.collection('schedules').find({
-        'bookings.bookingReference': reference,
-    }).toArray();
-
-    if (schedules.length === 0) {
-        return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(schedules);
+function generateReference(): string {
+    return 'DF-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
-export async function DELETE(
-    request: NextRequest,
-    { params }: { params: Promise<{ reference: string }> }
-) {
-    const { reference } = await params;
+export async function POST(request: NextRequest) {
+    const body = await request.json();
+    const { scheduleId, passengerName, passengerEmail } = body;
+
+    if (!scheduleId || !passengerName || !passengerEmail) {
+        return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+    }
 
     const client = await clientPromise;
     const db = client.db('airline-booking');
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const update = { $pull: { bookings: { bookingReference: reference } } } as any;
+    const schedule = await db.collection('schedules').findOne({ _id: new ObjectId(scheduleId) });
 
-    const result = await db.collection('schedules').updateOne(
-        { 'bookings.bookingReference': reference },
-        update
-    );
-
-    if (result.modifiedCount === 0) {
-        return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
+    if (!schedule) {
+        return NextResponse.json({ error: 'Flight not found' }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Booking cancelled successfully' });
+    if (schedule.bookings.length >= schedule.capacity) {
+        return NextResponse.json({ error: 'Flight is full' }, { status: 400 });
+    }
+
+    const bookingReference = generateReference();
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const pushUpdate = { $push: { bookings: { bookingReference, passengerName, passengerEmail, bookedAt: new Date() } } } as any;
+
+    await db.collection('schedules').updateOne(
+        { _id: new ObjectId(scheduleId) },
+        pushUpdate
+    );
+
+    const updatedSchedule = await db.collection('schedules').findOne({ _id: new ObjectId(scheduleId) });
+
+    return NextResponse.json({ bookingReference, schedule: updatedSchedule }, { status: 201 });
 }
