@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const AIRPORTS = [
     { code: 'NZNE', name: 'Dairy Flat', country: 'New Zealand' },
@@ -52,15 +54,10 @@ function SearchContent() {
     const destName = AIRPORTS.find(a => a.code === destination)?.name;
 
     return (
-        <main className="min-h-screen bg-gray-950">
+        <main className="min-h-screen bg-gray-950 flex flex-col">
 
             {/* Header */}
-            <div className="bg-gray-900 border-b border-white/10 px-6 py-4">
-                <div className="max-w-6xl mx-auto flex items-center justify-between">
-                    <a href="/" className="text-white font-bold text-xl">✈ DairyFlat<span className="text-sky-400">Air</span></a>
-                    <a href="/my-bookings" className="text-gray-400 hover:text-white text-sm transition">My Bookings</a>
-                </div>
-            </div>
+            <Navbar />
 
             {/* Search Panel */}
             <div className="bg-gray-900 border-b border-white/10 px-6 py-8">
@@ -117,7 +114,7 @@ function SearchContent() {
             </div>
 
             {/* Results */}
-            <div className="max-w-6xl mx-auto px-6 py-10">
+            <div className="max-w-6xl mx-auto px-6 py-10 flex-1 w-full">
 
                 {searched && !loading && results.length === 0 && (
                     <div className="text-center py-20">
@@ -196,6 +193,7 @@ function SearchContent() {
                     })}
                 </div>
             </div>
+            <Footer />
         </main>
     );
 }

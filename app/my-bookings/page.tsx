@@ -1,6 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 export default function MyBookingsPage() {
     const router = useRouter();
@@ -47,17 +49,12 @@ export default function MyBookingsPage() {
     const past = allBookings.filter(b => new Date(b.flight.departureDateTime) < new Date());
 
     return (
-        <main className="min-h-screen bg-gray-950">
+        <main className="min-h-screen bg-gray-950 flex flex-col">
 
             {/* Header */}
-            <div className="bg-gray-900 border-b border-white/10 px-6 py-4">
-                <div className="max-w-5xl mx-auto flex items-center justify-between">
-                    <a href="/" className="text-white font-bold text-xl">✈ DairyFlat<span className="text-sky-400">Air</span></a>
-                    <a href="/search" className="text-gray-400 hover:text-white text-sm transition">Search Flights</a>
-                </div>
-            </div>
+            <Navbar />
 
-            <div className="max-w-5xl mx-auto px-6 py-10">
+            <div className="max-w-5xl mx-auto px-6 py-10 flex-1 w-full">
 
                 <h1 className="text-3xl font-bold text-white mb-2">My Bookings</h1>
                 <p className="text-gray-500 mb-8">Enter your email to view all your upcoming and past flights.</p>
@@ -138,6 +135,7 @@ export default function MyBookingsPage() {
                     </div>
                 )}
             </div>
+            <Footer />
         </main>
     );
 }
